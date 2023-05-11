@@ -6,7 +6,7 @@ const jsPsych = initJsPsych();
 
 var textbox = {
   type: jsPsychMolFreeRecall,
-  questions: [{prompt: "Enter text: ", required: true}],
+  prompt: "",
   preamble: "Preamble"
 };
 
