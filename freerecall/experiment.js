@@ -4,6 +4,7 @@ const jsPsych = initJsPsych({
 
 const total_minutes = 1;
 const total_time = total_minutes * 60000 + 1000;
+const num_last_messages = 5;
 var start_time;
 var timer_ticks;
 
@@ -28,7 +29,10 @@ var timer_start = {
 var textbox = {
   type: jsPsychMolFreeRecall,
   prompt: "",
-  preamble: "Preamble"
+  preamble: () => {
+    var previous_responses = jsPsych.data.get().last(num_last_messages).select('response').values;
+    return `<p>${previous_responses.join("</p><p>")}</p>`
+  }
 };
 
 var freeRecallTimeline = {
@@ -44,6 +48,7 @@ var freeRecallTimeline = {
 
 
 
+// ENDSCREEN ============================================================
 
 //clearInterval(timer_ticks);
 //document.querySelector('#countdown-timer-div').style.display = 'none';
