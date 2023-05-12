@@ -29,11 +29,16 @@ var instructions = {
 // TRIAL ================================================================
 
 var trial = {
-  type: jsPsychAudioKeyboardResponse,
+  type: jsPsychMolAudioKeyboardResponse,
   stimulus: jsPsych.timelineVariable('word'),
   choices: ['a', 'l'],
   prompt: () => {
-    return `<img src="${jsPsych.timelineVariable('locus')}">`
+    var html_img = `<img src="${jsPsych.timelineVariable('locus')}">`;
+
+    var html_button = `<input id="dont-recall-button" class="jspsych-btn" type="button" value="Don't recall this item" />`; // added event listener in the custom mol plugin
+
+    var html = `<div>${html_img}</div> ${html_button}`;
+    return html;
   },
   data: jsPsych.timelineVariable('data'),
   response_ends_trial: true
@@ -53,6 +58,14 @@ var preload = {
 
 // ENDSCREEN ============================================================
 
+var debrief = {
+  type: jsPsychInstructions,
+  pages: [
+  "That's all folks!"
+  ],
+  show_clickable_nav: true
+}
+
 // TIMELINE =============================================================
 
 var timeline = [];
@@ -60,5 +73,6 @@ var timeline = [];
 timeline.push(instructions);
 timeline.push(preload);
 timeline.push(trial_timeline);
+timeline.push(debrief);
 
 jsPsych.run(timeline);
