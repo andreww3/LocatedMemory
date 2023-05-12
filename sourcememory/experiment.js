@@ -4,17 +4,25 @@ const jsPsych = initJsPsych();
 // generate a timeline variable for stimuli
   // stimuli is an array of objects
   // each object has:
-    // word: a stimulus (word audio file, filepath)
-    // locus: a prompt (locus image, filepath)
-    // data: an object containing the data to record for this stimulus (target/foil, locus, etc.)
+    // audio: the stimulus (word audio file, filepath)
+    // word: the word
+    // locus: locus image (filepath)
+    // data: an object containing the data to record for this stimulus (word, locus, target/foil, etc.)
 
-var stimuli = [{word: 'audio/1.wav', locus: 'img/rbb.jpg'}];
+var stimuli = [{audio: 'audio/1.wav', word: 'test', locus: 'img/rbb.jpg'}];
 
 // WELCOME ==============================================================
 
 
 
 // INSTRUCTIONS =========================================================
+
+var experimenter = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: 'Who was your experimenter?',
+  choices: ['Will', 'Laura'] // Will = 0; Laura = 1
+};
+
 
 var instructions = {
   type: jsPsychInstructions,
@@ -30,22 +38,56 @@ var instructions = {
 
 var trial = {
   type: jsPsychMolAudioKeyboardResponse,
-  stimulus: jsPsych.timelineVariable('word'),
+  stimulus: jsPsych.timelineVariable('audio'),
   choices: ['a', 'l'],
   prompt: () => {
+    var html_word = `${jsPsych.timelineVariable('word')}`;
+
     var html_img = `<img src="${jsPsych.timelineVariable('locus')}">`;
+
+    var html_keys = "<strong>Press 'A' for YES or 'L' for NO.</strong>";
 
     var html_button = `<input id="dont-recall-button" class="jspsych-btn" type="button" value="Don't recall this item" />`; // added event listener in the custom mol plugin
 
-    var html = `<div>${html_img}</div> ${html_button}`;
+    var html = `<div>
+      <p>${html_word}</p>
+      ${html_img}
+      </div>
+      <p>${html_keys}</p>
+      ${html_button}
+    `;
     return html;
   },
   data: jsPsych.timelineVariable('data'),
   response_ends_trial: true
 };
 
+var reset_keys = {
+  type: jsPsychHtmlKeyboardResponse,
+  choices: "NO_KEYS",
+  trial_duration: 1000,
+  prompt: "Place your fingers back on 'A' and 'L'",
+  timeline: [
+    {stimulus: '<p class="countdown">Get ready: 3</p>'},
+    {stimulus: '<p class="countdown">Get ready: 2</p>'},
+    {stimulus: '<p class="countdown">Get ready: 1</p>'}
+  ]
+};      
+
+var reset_keys_timeline = {
+  timeline: [reset_keys],
+  conditional_function: () => {
+    var data = jsPsych.data.get().last(1).values()[0];
+    if (data.response == "norecall") {
+      return true; // run if last response was "norecall" (button press)
+    } else {
+      return false;
+    };
+  }
+};
+
 var trial_timeline = {
-  timeline: [trial],
+  timeline: [trial, reset_keys_timeline],
   timeline_variables: stimuli,
   randomize_order: true
 };
@@ -53,7 +95,7 @@ var trial_timeline = {
 var preload = {
   type: jsPsychPreload,
   trials: [trial_timeline]
-}
+};
 
 
 // ENDSCREEN ============================================================
@@ -70,6 +112,7 @@ var debrief = {
 
 var timeline = [];
 
+timeline.push(experimenter);
 timeline.push(instructions);
 timeline.push(preload);
 timeline.push(trial_timeline);
