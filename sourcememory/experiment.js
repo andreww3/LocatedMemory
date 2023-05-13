@@ -43,11 +43,11 @@ var trial = {
   prompt: () => {
     var html_word = `${jsPsych.timelineVariable('word')}`;
 
-    var html_img = `<img src="${jsPsych.timelineVariable('locus')}">`;
+    var html_img = `<img class="locus-img" src="${jsPsych.timelineVariable('locus')}">`;
 
     var html_keys = "<strong>Press 'A' for YES or 'L' for NO.</strong>";
 
-    var html_button = `<input id="dont-recall-button" class="jspsych-btn" type="button" value="Don't recall this item" />`; // added event listener in the custom mol plugin
+    var html_button = `<input id="dont-recall-button" class="jspsych-btn" type="button" value="Don't recall this word" />`; // added event listener in the custom mol plugin
 
     var html = `<div>
       <p>${html_word}</p>
