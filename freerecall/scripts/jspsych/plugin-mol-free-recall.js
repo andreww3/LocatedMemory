@@ -47,7 +47,7 @@ var jsPsychMolFreeRecall = (function (jspsych) {
           }
           html += '<div id="jspsych-survey-text-0" class="jspsych-survey-text-question" style="margin: 2em 0em;">';
           html += '<p class="jspsych-survey-text">' + trial.prompt + "</p>";
-          html += '<input type="text" id="free-recall-input" name="#jspsych-survey-text-response-0" size="40" autofocus required placeholder=""></input>'
+          html += '<input type="text" id="free-recall-input" name="#jspsych-survey-text-response-0" size="60" autofocus required placeholder=""></input>'
           html += "</div>";
 
           
