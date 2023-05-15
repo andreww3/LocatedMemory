@@ -19,7 +19,7 @@ var stimuli = [{audio: 'audio/1.wav', word: 'test', locus: 'img/rbb.jpg'}];
 
 var experimenter = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: 'Who was your experimenter?',
+  stimulus: 'Who presented your walk narrative?',
   choices: ['Will', 'Laura'] // Will = 0; Laura = 1
 };
 
@@ -102,10 +102,10 @@ var preload = {
 
 var debrief = {
   type: jsPsychInstructions,
-  pages: [
-  "That's all folks!"
-  ],
-  show_clickable_nav: true
+  pages: ["All done!"],
+  show_clickable_nav: true,
+  allow_backward: false,
+  button_label_next: "Next"
 }
 
 // TIMELINE =============================================================
