@@ -9,7 +9,8 @@ const jsPsych = initJsPsych();
     // locus: locus image (filepath)
     // data: an object containing the data to record for this stimulus (word, locus, target/foil, etc.)
 
-var stimuli = [{audio: 'audio/1.wav', word: 'test', locus: 'img/rbb.jpg'}];
+var stimuli = [{audio: '1.wav', word: 'test', locus: 'img/rbb.jpg'}];
+var audio_folder;
 
 // WELCOME ==============================================================
 
@@ -20,7 +21,10 @@ var stimuli = [{audio: 'audio/1.wav', word: 'test', locus: 'img/rbb.jpg'}];
 var experimenter = {
   type: jsPsychHtmlButtonResponse,
   stimulus: 'Who presented your walk narrative?',
-  choices: ['Will', 'Laura'] // Will = 0; Laura = 1
+  choices: ['Will', 'Laura'], // Will = 0; Laura = 1
+  on_finish: (data) => {
+    audio_folder = data.response ? "laura" : "will";
+  }
 };
 
 
@@ -38,7 +42,10 @@ var instructions = {
 
 var trial = {
   type: jsPsychMolAudioKeyboardResponse,
-  stimulus: jsPsych.timelineVariable('audio'),
+  stimulus: () => {
+    var filepath = `audio/${audio_folder}/${jsPsych.timelineVariable('audio')}`;
+    return filepath;
+  },
   choices: ['a', 'l'],
   prompt: () => {
     var html_word = `${jsPsych.timelineVariable('word')}`;
