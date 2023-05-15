@@ -21,3 +21,17 @@ html, body {
   font-size: 24px;
   color: #333;
 }
+
+.chat {
+  display: flex;
+  height: 400px;
+  width: 400px;
+  text-align: right;
+  font-family: sans-serif;
+  font-size: small;
+  line-height: 1.2em;
+}
+
+.chat-inner {
+  align-self: flex-end;
+}
