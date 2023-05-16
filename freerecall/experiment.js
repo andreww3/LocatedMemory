@@ -68,7 +68,7 @@ var freeRecallTimeline = {
 
 var debrief = {
   type: jsPsychInstructions,
-  pages: ["All done!"],
+  pages: ["All done! Once you click Next, you will be redirected to the next task."],
   show_clickable_nav: true,
   allow_backward: false,
   button_label_next: "Next",
@@ -82,8 +82,10 @@ var debrief = {
 
 var timeline = [];
 
+timeline.push(instructions);
 timeline.push(timer_start);
 timeline.push(freeRecallTimeline);
+timeline.push(debrief);
 
 jsPsych.data.addProperties({subject: subjectID});
 
