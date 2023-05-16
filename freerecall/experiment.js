@@ -1,5 +1,9 @@
 const jsPsych = initJsPsych({
   display_element: 'jspsych-target',
+  on_finish: () => {
+    $.post('submit',{"content": jsPsych.data.get().csv()});
+    setTimeout(() => {window.location.href = `https://melbourneuni.au1.qualtrics.com/jfe/form/SV_a67L4g0MxQNXkVM?id=${subjectID}`;},1000);
+  }
 });
 
 const total_minutes = 1;
