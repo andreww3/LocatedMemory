@@ -155,6 +155,7 @@ var trial_timeline = {
 
 var preload = {
   type: jsPsychPreload,
+  message: "<p>Please wait for the experiment to load.</p>",
   images: img_files,
   audio: () => {
     return audio_files.map((x) => `audio/${audio_folder}/${x}`);
