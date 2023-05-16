@@ -53,7 +53,7 @@ Object.keys(loci).forEach((i) => {
 
   // add special words
   stimuli_data.push({word: special_words_current_locus.target[0], locus_orig: i, locus_exp: i, type: "specialTarget"});
-  stimuli_data.push({word: special_words_current_locus.foil[0], locus_orig: i, locus_exp: loci_special_foils[i][0], type: "specialFoil"});
+  stimuli_data.push({word: special_words_current_locus.foil[0], locus_orig: loci_special_foils[i][0], locus_exp: i, type: "specialFoil"});
 });
 
 var stimuli = stimuli_data.map((data) => {
