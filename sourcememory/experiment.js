@@ -62,6 +62,10 @@ var stimuli = stimuli_data.map((data) => {
 
 //var stimuli = [{audio: '1.wav', word: 'test', locus: 'img/rbb.jpg'}];
 var audio_folder;
+var audio_files = Object.values(words_ids)
+  .reduce((a,b) => b.concat(a))
+  .map((x) => `${x}.mp3`);
+var img_files = Object.keys(loci).map((x) => `img/${x}.jpg`);
 
 // WELCOME ==============================================================
 
@@ -152,7 +156,11 @@ var trial_timeline = {
 
 var preload = {
   type: jsPsychPreload,
-  trials: [trial_timeline]
+  images: img_files,
+  audio: () => {
+    return audio_files.map((x) => `audio/${audio_folder}/${x}`);
+  }
+  //trials: [trial_timeline]
 };
 
 
