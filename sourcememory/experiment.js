@@ -9,7 +9,58 @@ const jsPsych = initJsPsych();
     // locus: locus image (filepath)
     // data: an object containing the data to record for this stimulus (word, locus, target/foil, etc.)
 
-var stimuli = [{audio: '1.wav', word: 'test', locus: 'img/rbb.jpg'}];
+var locus_words_selected = {};
+Object.keys(loci).forEach((i) => {
+  var num_words = 8 + loci[i].length * 2;
+  locus_words_selected[i] = jsPsych.randomization.sampleWithoutReplacement(locus_words[i], num_words);
+});
+
+var stimuli_data = [];
+Object.keys(loci).forEach((i) => {
+  // for each locus
+  var words = locus_words_selected[i];
+  var special_words_current_locus = special_words[i];
+
+  i = Number(i);
+
+  // add narrative words
+  for (let w = 0; w < words.length; w++) {
+    if (w < 8) {
+      // target
+      var data_obj = {
+        word: words[w], 
+        locus_orig: i, 
+        locus_exp: i, 
+        type: "target"
+      };
+    } else {
+      // foil
+      // Math.floor((w-8)/2) maps the index from `words` (w) to the index in `loci`
+      var data_obj = {
+        word: words[w], 
+        locus_orig: i, 
+        locus_exp: loci[i][Math.floor((w-8)/2)], 
+        type: "foil"
+      };
+    }
+    stimuli_data.push(data_obj); 
+  }
+
+  // add special words
+  // stimuli_data.push({word: special_words_current_locus.target[0], locus_orig: i, locus_exp});
+});
+
+var stimuli = stimuli_data.map((data) => {
+  var data_obj = {
+    audio: `${words_ids[data.word][0]}.mp3`,
+    word: data.word,
+    locus: `img/${data.locus_exp}.jpg`,
+    data: data
+  };
+  return data_obj;
+});
+
+//var stimuli = [{audio: '1.wav', word: 'test', locus: 'img/rbb.jpg'}];
 var audio_folder;
 
 // WELCOME ==============================================================
