@@ -64,4 +64,6 @@ var timeline = [];
 timeline.push(timer_start);
 timeline.push(freeRecallTimeline);
 
+jsPsych.data.addProperties({subject: subjectID});
+
 jsPsych.run(timeline);

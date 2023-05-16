@@ -184,4 +184,6 @@ timeline.push(preload);
 timeline.push(trial_timeline);
 timeline.push(debrief);
 
+jsPsych.data.addProperties({subject: subjectID});
+
 jsPsych.run(timeline);
