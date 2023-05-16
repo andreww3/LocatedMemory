@@ -10,6 +10,14 @@ var timer_ticks;
 
 // INSTRUCTIONS =========================================================
 
+var instructions = {
+  type: jsPsychInstructions,
+  pages: ['Listen to instructions from the experimenter. When instructed, click Next to continue.'],
+  show_clickable_nav: true,
+  allow_backward: false,
+  button_label_next: "Next"
+};
+
 // TRIAL ================================================================
 
 var timer_start = {
@@ -54,8 +62,17 @@ var freeRecallTimeline = {
 
 // ENDSCREEN ============================================================
 
-//clearInterval(timer_ticks);
-//document.querySelector('#countdown-timer-div').style.display = 'none';
+var debrief = {
+  type: jsPsychInstructions,
+  pages: ["All done!"],
+  show_clickable_nav: true,
+  allow_backward: false,
+  button_label_next: "Next",
+  on_start: () => {
+    clearInterval(timer_ticks);
+    document.querySelector('#countdown-timer-div').style.display = 'none';
+  }
+};
 
 // TIMELINE =============================================================
 
