@@ -54,18 +54,18 @@ var stimuli = stimuli_data.map((data) => {
   var data_obj = {
     audio: `${words_ids[data.word][0]}.mp3`,
     word: data.word,
-    locus: `img/${data.locus_exp}.jpg`,
+    locus: `img/${data.locus_exp}.JPG`,
     data: data
   };
   return data_obj;
 });
-
 //var stimuli = [{audio: '1.wav', word: 'test', locus: 'img/rbb.jpg'}];
+
 var audio_folder;
 var audio_files = Object.values(words_ids)
   .reduce((a,b) => b.concat(a))
   .map((x) => `${x}.mp3`);
-var img_files = Object.keys(loci).map((x) => `img/${x}.jpg`);
+var img_files = Object.keys(loci).map((x) => `img/${x}.JPG`);
 
 // WELCOME ==============================================================
 
@@ -75,7 +75,7 @@ var img_files = Object.keys(loci).map((x) => `img/${x}.jpg`);
 
 var experimenter = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: 'Who presented your walk narrative?',
+  stimulus: '<p>Who presented your walk narrative?</p>',
   choices: ['Will', 'Laura'], // Will = 0; Laura = 1
   on_finish: (data) => {
     audio_folder = data.response ? "laura" : "will";
@@ -85,12 +85,10 @@ var experimenter = {
 
 var instructions = {
   type: jsPsychInstructions,
-  pages: [
-  'Welcome to the experiment. Click next to begin.',
-  'This is the second page of instructions.',
-  'This is the final page.'
-  ],
-  show_clickable_nav: true
+  pages: ['Listen to instructions from the experimenter. When instructed, click Next to continue.'],
+  show_clickable_nav: true,
+  allow_backward: false,
+  button_label_next: "Next"
 }
 
 // TRIAL ================================================================
