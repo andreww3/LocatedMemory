@@ -1,0 +1,32 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /audio
+  static_dir: audio
+
+- url: /img
+  static_dir: img
+
+- url: /csv
+  static_dir: csv
+
+- url: /scripts
+  static_dir: scripts
+
+- url: /experiment\.js
+  static_files: experiment.js
+  upload: experiment\.js
+
+- url: /.*
+  script: backend.application
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+
+builtins:
+  - remote_api: on
