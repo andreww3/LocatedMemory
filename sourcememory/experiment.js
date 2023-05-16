@@ -9,7 +9,8 @@ const jsPsych = initJsPsych();
     // locus: locus image (filepath)
     // data: an object containing the data to record for this stimulus (word, locus, target/foil, etc.)
 
-var stimuli = [{audio: 'audio/1.wav', word: 'test', locus: 'img/rbb.jpg'}];
+var stimuli = [{audio: '1.wav', word: 'test', locus: 'img/rbb.jpg'}];
+var audio_folder;
 
 // WELCOME ==============================================================
 
@@ -19,8 +20,11 @@ var stimuli = [{audio: 'audio/1.wav', word: 'test', locus: 'img/rbb.jpg'}];
 
 var experimenter = {
   type: jsPsychHtmlButtonResponse,
-  stimulus: 'Who was your experimenter?',
-  choices: ['Will', 'Laura'] // Will = 0; Laura = 1
+  stimulus: 'Who presented your walk narrative?',
+  choices: ['Will', 'Laura'], // Will = 0; Laura = 1
+  on_finish: (data) => {
+    audio_folder = data.response ? "laura" : "will";
+  }
 };
 
 
@@ -38,7 +42,10 @@ var instructions = {
 
 var trial = {
   type: jsPsychMolAudioKeyboardResponse,
-  stimulus: jsPsych.timelineVariable('audio'),
+  stimulus: () => {
+    var filepath = `audio/${audio_folder}/${jsPsych.timelineVariable('audio')}`;
+    return filepath;
+  },
   choices: ['a', 'l'],
   prompt: () => {
     var html_word = `${jsPsych.timelineVariable('word')}`;
@@ -102,10 +109,10 @@ var preload = {
 
 var debrief = {
   type: jsPsychInstructions,
-  pages: [
-  "That's all folks!"
-  ],
-  show_clickable_nav: true
+  pages: ["All done!"],
+  show_clickable_nav: true,
+  allow_backward: false,
+  button_label_next: "Next"
 }
 
 // TIMELINE =============================================================
