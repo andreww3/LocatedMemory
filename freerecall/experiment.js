@@ -31,7 +31,11 @@ var textbox = {
   prompt: "",
   preamble: () => {
     var previous_responses = jsPsych.data.get().last(num_last_messages).select('response').values;
-    return `<p>${previous_responses.join("</p><p>")}</p>`
+    return `<div class="chat">
+    <div>
+    <p>${previous_responses.join("</p><p>")}</p>
+    </div>
+    </div>`
   }
 };
 
