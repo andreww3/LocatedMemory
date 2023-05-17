@@ -6,7 +6,7 @@ const jsPsych = initJsPsych({
   }
 });
 
-const total_minutes = 20;
+const total_minutes = 15;
 const total_time = total_minutes * 60000 + 1000;
 const num_last_messages = 5;
 var start_time;

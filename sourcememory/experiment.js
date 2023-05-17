@@ -116,7 +116,7 @@ var trial = {
     var html_button = `<input id="dont-recall-button" class="jspsych-btn" type="button" value="Don't recall this word" />`; // added event listener in the custom mol plugin
 
     var html = `<div>
-      <p>${html_word}</p>
+      <p id="visual-word" style="visibility:hidden;">${html_word}</p>
       ${html_img}
       </div>
       <p>${html_keys}</p>
@@ -125,7 +125,13 @@ var trial = {
     return html;
   },
   data: jsPsych.timelineVariable('data'),
-  response_ends_trial: true
+  response_ends_trial: true,
+  on_load: () => {
+    // make the word visible after a delay
+    setTimeout(() => {
+      document.querySelector('#visual-word').style.visibility = 'visible';
+    }, 3000);
+  }
 };
 
 var reset_keys = {
@@ -173,7 +179,10 @@ var preload = {
 
 var debrief = {
   type: jsPsychInstructions,
-  pages: ["All done!"],
+  pages: [
+    "All done!",
+    "The memory tasks for today are now complete. Thank you for participating. Please listen to the researchers for instructions on what to do next."
+  ],
   show_clickable_nav: true,
   allow_backward: false,
   button_label_next: "Next"
