@@ -6,3 +6,8 @@
 .locus-img {
   height: 300px
 }
+
+.locus-keys {
+  height: 50px;
+  font-weight: bold;
+}

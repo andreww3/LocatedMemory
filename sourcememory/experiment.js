@@ -2,7 +2,8 @@ const jsPsych = initJsPsych({
   on_finish: () => {
     $.post('submit',{"content": jsPsych.data.get().csv()});
     //setTimeout(() => {window.location.href = `https://melbourneuni.au1.qualtrics.com/jfe/form/SV_a67L4g0MxQNXkVM?id=${subjectID}`;},1000);
-  }
+  },
+  default_iti: 500
 });
 
 
@@ -73,6 +74,8 @@ var audio_files = Object.values(words_ids)
   .map((x) => `${x}.mp3`);
 var img_files = Object.keys(loci).map((x) => `img/${x}.JPG`);
 
+var delay_word;
+
 // WELCOME ==============================================================
 
 
@@ -111,7 +114,7 @@ var trial = {
 
     var html_img = `<img class="locus-img" src="${jsPsych.timelineVariable('locus')}">`;
 
-    var html_keys = "<strong>Press 'A' for YES or 'L' for NO.</strong>";
+    var html_keys = "<span style='float: left;'>A: NO</span><span style='float: right;'>L: YES</span>";
 
     var html_button = `<input id="dont-recall-button" class="jspsych-btn" type="button" value="Don't recall this word" />`; // added event listener in the custom mol plugin
 
@@ -119,7 +122,7 @@ var trial = {
       <p id="visual-word" style="visibility:hidden;">${html_word}</p>
       ${html_img}
       </div>
-      <p>${html_keys}</p>
+      <div class="locus-keys">${html_keys}</div>
       ${html_button}
     `;
     return html;
@@ -128,9 +131,12 @@ var trial = {
   response_ends_trial: true,
   on_load: () => {
     // make the word visible after a delay
-    setTimeout(() => {
+    delay_word = setTimeout(() => {
       document.querySelector('#visual-word').style.visibility = 'visible';
     }, 3000);
+  },
+  on_finish: () => {
+    clearTimeout(delay_word);
   }
 };
 
