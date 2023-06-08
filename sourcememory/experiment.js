@@ -77,7 +77,18 @@ var delay_word;
 
 // WELCOME ==============================================================
 
+function generatePinTrial(pin) {
+  return {
+    type: jsPsychCloze,
+    text: `<p>Please do not move on until the experimenter has given you the PIN code to move on to the next page.</p><p>% ${pin} %</p>`,
+    check_answers: true,
+    allow_blanks: false,
+    button_text: 'Next',
+    //mistake_fn: () => { alert("Incorrect PIN. Please check again.") }
+  };
+};
 
+var pin1 = generatePinTrial(3257);
 
 // INSTRUCTIONS =========================================================
 
@@ -156,8 +167,34 @@ var reset_keys_timeline = {
   timeline: [reset_keys],
   conditional_function: () => {
     var data = jsPsych.data.get().last(1).values()[0];
-    if (data.response == "norecall") {
-      return true; // run if last response was "norecall" (button press)
+    if (data.response == "norecall" || data.section == "break") {
+      // run if last response was "norecall" (button press) OR last trial was a break
+      return true;
+    } else {
+      return false;
+    };
+  }
+};
+
+var break_trial = {
+  type: jsPsychInstructions,
+  data: {section: 'break'},
+  pages: ["Please take a short break. Whenever you're ready, click Next to continue."],
+  show_clickable_nav: true,
+  allow_backward: false,
+  button_label_next: "Next"
+};
+
+var break_timeline = {
+  timeline: [break_trial],
+  conditional_function: () => {
+    var data = jsPsych.data.get().last(1).values()[0];
+    var timeline_node_id = data.internal_node_id;
+    timeline_node_id = timeline_node_id.split('-');
+    timeline_node_id = timeline_node_id[timeline_node_id.length - 1];
+    if (['0.29','0.59','0.89','0.119','0.149'].includes(timeline_node_id)) {
+      // run if last trial number is a multiple of 30
+      return true;
     } else {
       return false;
     };
@@ -165,7 +202,7 @@ var reset_keys_timeline = {
 };
 
 var trial_timeline = {
-  timeline: [trial, reset_keys_timeline],
+  timeline: [trial, break_timeline, reset_keys_timeline],
   timeline_variables: stimuli,
   randomize_order: true
 };
@@ -200,6 +237,7 @@ var timeline = [];
 
 timeline.push(experimenter);
 timeline.push(instructions);
+timeline.push(pin1);
 timeline.push(preload);
 timeline.push(trial_timeline);
 timeline.push(debrief);
