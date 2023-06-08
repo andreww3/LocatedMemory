@@ -6,7 +6,7 @@ const jsPsych = initJsPsych({
   }
 });
 
-const total_minutes = 20;
+const total_minutes = 15;
 const total_time = total_minutes * 60000 + 1000;
 const prac_minutes = 1;
 const prac_time = prac_minutes * 60000 + 1000;
@@ -15,6 +15,20 @@ var start_time;
 var timer_ticks;
 
 // INSTRUCTIONS =========================================================
+
+function generatePinTrial(pin) {
+  return {
+    type: jsPsychCloze,
+    text: `<p>Please do not move on until the experimenter has given you the PIN code to move on to the next page.</p><p>% ${pin} %</p>`,
+    check_answers: true,
+    allow_blanks: false,
+    button_text: 'Next',
+    //mistake_fn: () => { alert("Incorrect PIN. Please check again.") }
+  };
+};
+
+var pin1 = generatePinTrial(7385);
+var pin2 = generatePinTrial(8309);
 
 var instructions = {
   type: jsPsychInstructions,
@@ -138,10 +152,12 @@ var debrief = {
 
 var timeline = [];
 
+timeline.push(pin1);
 timeline.push(instructions);
 timeline.push(prac_timer_start);
 timeline.push(practiceTimeline);
 timeline.push(pracEnd);
+timeline.push(pin2);
 timeline.push(timer_start);
 timeline.push(freeRecallTimeline);
 timeline.push(debrief);
