@@ -102,7 +102,7 @@ var practiceTextbox = {
   prompt: "",
   data: {section: 'practice'},
   preamble: () => {
-    var previous_responses = jsPsych.data.get().last(num_last_messages).select('response').values;
+    var previous_responses = jsPsych.data.get().last(num_last_messages).filter({section: 'practice'}).select('response').values;
     return `<div class="chat">
     <div>
     <p>${previous_responses.join("</p><p>")}</p>
