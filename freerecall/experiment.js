@@ -152,8 +152,8 @@ var debrief = {
 
 var timeline = [];
 
-timeline.push(pin1);
 timeline.push(instructions);
+timeline.push(pin1);
 timeline.push(prac_timer_start);
 timeline.push(practiceTimeline);
 timeline.push(pracEnd);
